@@ -1,17 +1,20 @@
 class Solution:
     def maximumUniqueSubarray(self, nums: List[int]) -> int:
-        counter=defaultdict(int) # track count of  elements in the window
-        res=i=tot=0
-		
-        for j in range(len(nums)):
-            x=nums[j]   
-            tot+=x
-            counter[x]+=1
-            # adjust the left bound of sliding window   elements
-            while i < j and counter[x]>1: 
-                counter[nums[i]]-=1
-                tot-=nums[i]
-                i+=1
-            
-            res=max(res, tot)            
-        return res
+        lsubset = set()
+        lpt = 0
+        cTotal = 0
+        total = 0
+
+        for rpt in range(len(nums)): 
+            while nums[rpt] in lsubset:
+                lsubset.remove(nums[lpt])
+                cTotal -= nums[lpt]
+                lpt += 1
+
+
+            lsubset.add(nums[rpt])
+            cTotal += nums[rpt]
+            total = max(total, cTotal)
+        
+        return total
+
